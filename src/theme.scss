@@ -1,0 +1,56 @@
+@use "@angular/material" as mat;
+
+@include mat.core();
+$my-primary-color: #006699;
+$my-accent-color: #ffc107;
+$indigo-palette: (
+    50: $my-primary-color,
+    100: $my-primary-color,
+    200: $my-primary-color,
+    300: $my-primary-color,
+    // ... continues to 900
+    contrast:
+        (
+            50: rgba(black, 0.87),
+            100: rgba(black, 0.87),
+            200: rgba(black, 0.87),
+            300: white,
+            // ... continues to 900
+        ),
+);
+$orange-palette: (
+    50: $my-accent-color,
+    100: $my-accent-color,
+    200: $my-accent-color,
+    300: $my-accent-color,
+    // ... continues to 900
+    contrast:
+        (
+            50: rgba(black, 0.87),
+            100: rgba(black, 0.87),
+            200: rgba(black, 0.87),
+            300: white,
+            // ... continues to 900
+        ),
+);
+
+$my-primary: mat.define-palette(mat.$indigo-palette, 500);
+$my-accent: mat.define-palette(mat.$orange-palette, A200, A100, A400);
+
+$my-theme: mat.define-light-theme(
+    (
+        color: (
+            primary: $my-primary,
+            accent: $my-accent,
+        ),
+        density: 0,
+    )
+);
+
+// Emit theme-dependent styles for common features used across multiple components.
+@include mat.core-theme($my-theme);
+
+// Emit styles for MatButton based on `$my-theme`. Because the configuration
+// passed to `define-light-theme` omits typography, `button-theme` will not
+// emit any typography styles.
+@include mat.button-theme($my-theme);

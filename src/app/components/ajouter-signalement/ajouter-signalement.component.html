@@ -1,0 +1,185 @@
+<!-- Title group  -->
+<div class="title-group">
+  <h1 class="mat-h1">Ajouter Signalement</h1>
+  <mat-divider fxFlex="1 0"></mat-divider>
+</div>
+
+<!-- Form -->
+<div class="inner-wrapper">
+  <form
+    [formGroup]="signalementForm"
+    (ngSubmit)="submitSignalementForm()"
+    #resetSignalementForm="ngForm"
+    novalidate
+    class="form-container"
+  >
+    <!-- Left block -->
+    <h3>Auteur:</h3>
+    <mat-card>
+      <div class="controlers-wrapper">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Prénom</mat-label>
+          <input matInput formControlName="firstName" required />
+          <mat-error
+            *ngIf="signalementForm.controls['firstName'].hasError('required')"
+          >
+            Veuillez renseigner ce champ
+          </mat-error>
+          <mat-error
+            *ngIf="signalementForm.controls['firstName'].hasError('maxlength')"
+          >
+            Maximum 50 caractères
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="lastName" required />
+          <mat-error
+            *ngIf="signalementForm.controls['lastName'].hasError('required')"
+          >
+            Veuillez renseigner ce champ
+          </mat-error>
+          <mat-error
+            *ngIf="signalementForm.controls['lastName'].hasError('maxlength')"
+          >
+            Maximum 50 caractères
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Date de naissance</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            placeholder="Date de naissance"
+            formControlName="birthDate"
+            [max]="maxDate"
+            [min]="minDate"
+            readonly
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+
+          <mat-error
+            *ngIf="signalementForm.controls['birthDate'].hasError('required')"
+          >
+            Veuillez renseigner ce champ
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Sexe</mat-label>
+          <mat-select formControlName="sex" required>
+            <mat-option value="homme">Homme</mat-option>
+            <mat-option value="femme">Femme</mat-option>
+            <mat-option value="non-binaire">Non-binaire</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="signalementForm.controls['sex'].hasError('required')"
+          >
+            Veuillez renseigner ce champ
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required />
+          <mat-error
+            *ngIf="signalementForm.controls['email'].hasError('required')"
+          >
+            Veuillez renseigner ce champ
+          </mat-error>
+          <mat-error
+            *ngIf="signalementForm.controls['email'].hasError('email')"
+          >
+            Adresse email invalide
+          </mat-error>
+          <mat-error
+            *ngIf="signalementForm.controls['email'].hasError('uniqueEmail')"
+          >
+            Cette adresse email est déjà utilisée
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-card>
+    <mat-card>
+      <div class="controlers-wrapper">
+        <h3>Description:</h3>
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+          <mat-error
+            *ngIf="
+              signalementForm.controls['description'].hasError('maxlength')
+            "
+          >
+            Maximum 200 caractères
+          </mat-error>
+        </mat-form-field>
+        <div class="mat-form-field">
+          <mat-form-field class="multiple-items">
+            <mat-chip-list #chipList formControlName="observations" multiple>
+              <mat-chip
+                *ngFor="let observation of selectedObservations"
+                [value]="observation._id"
+              >
+                {{ observation.name }}
+                <mat-icon
+                  matChipRemove
+                  *ngIf="chipList.chips.length > 0"
+                  (click)="removeSelectedObservation(observation)"
+                >
+                  cancel
+                </mat-icon>
+              </mat-chip>
+            </mat-chip-list>
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayFn"
+              (optionSelected)="onObservationSelected($event.option.value)"
+              aria-describedby="observations-description"
+            >
+              <mat-option
+                *ngFor="let observation of filteredObservations"
+                [value]="observation"
+              >
+                {{ observation.name }}
+              </mat-option>
+            </mat-autocomplete>
+            <input
+              matInput
+              placeholder="Sélectionner une observation"
+              [matAutocomplete]="auto"
+              (input)="onObservationInput($event)"
+              aria-describedby="observations-description"
+              [ngClass]="'autoCompleteClass'"
+            />
+            <div
+              *ngIf="
+                signalementForm.controls.observations.invalid &&
+                signalementForm.controls.observations.touched
+              "
+            >
+              <mat-error
+                *ngIf="signalementForm.controls.observations.errors.required"
+              >
+                Veuillez sélectionner au moins une observation.
+              </mat-error>
+            </div>
+          </mat-form-field>
+          <p id="observations-description" class="visually-hidden">
+            Suggestions will appear as you type
+          </p>
+        </div>
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="signalementForm.invalid"
+      >
+        Ajouter
+      </button>
+    </mat-card>
+  </form>
+</div>
