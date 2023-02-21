@@ -46,10 +46,10 @@ export class SignalementsListeComponent {
       });
   }
   // method pour supprimer un signalement
-  supprimerSignalement(index: number, e: Observation): void {
+  supprimerSignalement(index: number, e: Signalement): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '250px',
-      data: 'être vous sure de vouloir faire ceci?',
+      data: 'être vous sure de vouloir supprimer cet élément?',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

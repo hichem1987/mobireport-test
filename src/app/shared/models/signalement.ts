@@ -1,6 +1,6 @@
 import { Observation } from './observation';
 export interface Signalement {
-  id?: number;
+  _id?: number;
   author: {
     first_name: string;
     last_name: string;
