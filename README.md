@@ -26,6 +26,12 @@ Lister les signalements existants
 Modifier un signalement existant
 Supprimer un signalement existant
 
+## Deployment
+
+la base de données MongoDb est déployé sur le cloud.
+et le site web est déployé sur github pages accessible depuis le lien
+`https://hichem1987.github.io/mobireport-test/ajouter-signalement`
+
 ## Technologies utilisées
 
 Angular
@@ -33,3 +39,4 @@ Angular Material
 Node.js
 Express
 MongoDB
+Heroku
