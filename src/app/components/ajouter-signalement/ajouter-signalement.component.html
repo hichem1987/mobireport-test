@@ -127,7 +127,7 @@
                 <mat-icon
                   matChipRemove
                   *ngIf="chipList.chips.length > 0"
-                  (click)="removeSelectedObservation(observation)"
+                  (click)="supprimerObservationSelectionne(observation)"
                 >
                   cancel
                 </mat-icon>
@@ -168,7 +168,7 @@
             </div>
           </mat-form-field>
           <p id="observations-description" class="visually-hidden">
-            Suggestions will appear as you type
+            propositions vont apparaitre quand vous tapez
           </p>
         </div>
       </div>

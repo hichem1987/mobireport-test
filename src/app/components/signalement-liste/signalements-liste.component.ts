@@ -29,7 +29,7 @@ export class SignalementsListeComponent {
 
   constructor(private signalementApi: ApiService, public dialog: MatDialog) {
     this.signalementApi
-      .GetSignalements()
+      .getSignalements()
       .subscribe((signalements: [Signalement]) => {
         signalements.forEach((signalement, key) => {
           const date = new Date(signalement.author.birth_date);
@@ -60,7 +60,7 @@ export class SignalementsListeComponent {
           1
         );
         this.dataSource.data = data;
-        this.signalementApi.DeleteSignalement(e._id).subscribe();
+        this.signalementApi.supprimerSignalement(e._id).subscribe();
       }
     });
   }

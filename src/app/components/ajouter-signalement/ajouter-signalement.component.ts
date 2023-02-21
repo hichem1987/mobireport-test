@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ApiService } from 'src/app/shared/services/api.service';
 import {
   FormGroup,
@@ -12,7 +12,6 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observation } from 'src/app/shared/models/observation';
 import { Signalement } from 'src/app/shared/models/signalement';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 export interface Subject {
   name: string;
@@ -82,43 +81,11 @@ export class AjouterSignalementComponent implements OnInit {
       }
     );
   }
-  /*   onObservationInput(input: any) {
-    const value = (input.target as HTMLInputElement).value;
-
-    if (!value) {
-      this.filteredObservations = this.observations;
-      return;
-    }
-
-    const filterValue = value.toLowerCase();
-    this.filteredObservations = this.observations.filter((observation) =>
-      observation.name.toLowerCase().includes(filterValue)
-    );
-  }
-
-  onObservationSelected(observation: any) {
-    if (!this.selectedObservations.find((o) => o._id === observation._id)) {
-      this.selectedObservations.push(observation);
-    }
-    this.filteredObservations = [];
-  }
-
-  removeSelectedObservation(observation: Observation) {
-    const index = this.selectedObservations.findIndex(
-      (o) => o._id === observation._id
-    );
-    if (index >= 0) {
-      this.selectedObservations.splice(index, 1);
-      this.signalementForm.controls['observations'].setValue(
-        this.selectedObservations.map((o) => o._id)
-      );
-    }
-  } */
+  // traitement lors de la selection d'une observation dans la liste déroulante des observations et traitement des object dynamique
   onObservationInput(input: any): void {
     const value = (input.target as HTMLInputElement).value.trim().toLowerCase();
 
     if (value === '') {
-      //this.filteredObservations = [];
       return;
     }
 
@@ -126,20 +93,9 @@ export class AjouterSignalementComponent implements OnInit {
       observation.name.toLowerCase().includes(value)
     );
   }
-
+  // traitement lors de la selection d'une observation dans les chips
   onObservationSelected(event: Observation): void {
-    console.log('event', event);
     const selectedObservation = event as Observation;
-    console.log(
-      'selectedObservation',
-      selectedObservation,
-      'this.selectedObservation',
-      this.selectedObservations
-    );
-    console.log(
-      '   !this.selectedObservations.find((o) => o._id === selectedObservation._id)',
-      !this.selectedObservations.find((o) => o._id === selectedObservation._id)
-    );
     if (
       !this.selectedObservations.find((o) => o._id === selectedObservation._id)
     ) {
@@ -155,7 +111,8 @@ export class AjouterSignalementComponent implements OnInit {
     );
   }
 
-  removeSelectedObservation(observation: Observation) {
+  // traitement lors de la suppression d'une observation
+  supprimerObservationSelectionne(observation: Observation): void {
     this.filteredObservations.push(observation);
     const index = this.selectedObservations.findIndex(
       (o) => o._id === observation._id
@@ -167,33 +124,23 @@ export class AjouterSignalementComponent implements OnInit {
       );
     }
   }
-
+  // utilisé pour un affichage correct des chips
   displayFn(observation: Observation): string {
     return observation && observation.name ? observation.name : '';
   }
 
-  /* Submit book */
-  submitSignalementForm() {
-    /*     if (this.signalementForm.valid) {
-      this.signalementApi
-        .AddSignalement(this.signalementForm.value)
-        .subscribe((res) => {
-          this.ngZone.run(() =>
-            this.router.navigateByUrl('/signalements-list')
-          );
-        });
-    } */
+  /* creer signalement bouton click */
+  submitSignalementForm(): void {
     if (this.signalementForm.valid) {
-      console.log('this.signalementForm.value', this.signalementForm.value);
       const signalement: Signalement = {
         author: {
-          first_name: this.signalementForm.value.firstName,
-          last_name: this.signalementForm.value.lastName,
+          first_name: this.signalementForm.value.firstName.trim(),
+          last_name: this.signalementForm.value.lastName.trim(),
           birth_date: this.signalementForm.value.birthDate,
           sex: this.signalementForm.value.sex,
-          email: this.signalementForm.value.email,
+          email: this.signalementForm.value.email.trim(),
         },
-        description: this.signalementForm.value.description,
+        description: this.signalementForm.value.description.trim(),
         observations: this.signalementForm.value.observations,
       };
 
@@ -202,18 +149,23 @@ export class AjouterSignalementComponent implements OnInit {
           this.snackBar.open('Signalement ajouté avec succès', 'Fermer', {
             duration: 2000,
           });
-          this.router.navigate(['/signalements-list']);
+          this.router.navigate(['/signalements-liste']);
         },
         (error) => {
+          // gerer le scenario email existant
           if (error.status === 400) {
-            const formErrors = error.error;
-            Object.keys(formErrors).forEach((key) => {
-              const errors = formErrors[key];
-              const control = this.signalementForm.get(key);
-              if (control) {
-                control.setErrors({ serverError: errors });
+            console.log(
+              "message d'erreur comme demandé par l'énnoncé",
+              error.error
+            );
+
+            this.snackBar.open(
+              `L'email ${this.signalementForm.value.email} est utilisé existe dans la base de données`,
+              'Fermer',
+              {
+                duration: 3000,
               }
-            });
+            );
           } else {
             this.errorMessage = error.message;
           }

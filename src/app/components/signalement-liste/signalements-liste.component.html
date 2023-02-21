@@ -10,7 +10,7 @@
 
 <div class="container" *ngIf="SignalementData.length > 0">
   <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
+    <table class="signalements-table" mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="_id">
         <th mat-header-cell *matHeaderCellDef>ID du Signalement</th>
         <td mat-cell *matCellDef="let element">{{ element._id }}</td>
@@ -71,12 +71,16 @@
 
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Action</th>
-        <td mat-cell *matCellDef="let element; let i = index">
+        <td
+          mat-cell
+          *matCellDef="let element; let i = index"
+          class="actionButtons"
+        >
           <button
             mat-raised-button
             color="primary"
             class="push-right"
-            [routerLink]="['/edit-signalement/', element._id]"
+            [routerLink]="['/modifier-signalement/', element._id]"
           >
             Modifier
           </button>
@@ -87,6 +91,22 @@
           >
             Supprimer
           </button>
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Modifier Signalement"
+            fontIcon="pencil"
+            class="primary-color"
+            [routerLink]="['/modifier-signalement/', element._id]"
+            >edit</mat-icon
+          >
+          <mat-icon
+            class="secondary-color"
+            aria-hidden="false"
+            aria-label="Supprimer Signalement"
+            (click)="supprimerSignalement(i, element)"
+            fontIcon="pencil"
+            >delete</mat-icon
+          >
         </td>
       </ng-container>
 

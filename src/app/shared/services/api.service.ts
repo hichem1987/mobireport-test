@@ -13,7 +13,7 @@ import {
   providedIn: 'root',
 })
 export class ApiService {
-  endpoint: string = 'http://localhost:8001/api';
+  endpoint: string = 'https://mobireport-test.herokuapp.com/api';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private http: HttpClient) {}
@@ -21,19 +21,19 @@ export class ApiService {
   // ajouter signalement
   creerSignalement(data: Signalement): Observable<any> {
     let API_URL = `${this.endpoint}/add-signalement`;
-    return this.http.post(API_URL, data).pipe(catchError(this.errorMgmt));
+    return this.http.post(API_URL, data);
   }
 
   // Get all signalements
-  GetSignalements() {
+  getSignalements() {
     return this.http.get(`${this.endpoint}`);
   }
 
   // Get signalement
-  GetSignalement(id): Observable<any> {
+  getSignalement(id): Observable<Partial<Signalement>> {
     let API_URL = `${this.endpoint}/read-signalement/${id}`;
     return this.http.get(API_URL, { headers: this.headers }).pipe(
-      map((res: Response) => {
+      map((res: Partial<Signalement>) => {
         return res || {};
       }),
       catchError(this.errorMgmt)
@@ -41,15 +41,13 @@ export class ApiService {
   }
 
   // Update signalement
-  UpdateSignalement(id, data): Observable<any> {
+  modifierSignalement(id, data): Observable<any> {
     let API_URL = `${this.endpoint}/update-signalement/${id}`;
-    return this.http
-      .put(API_URL, data, { headers: this.headers })
-      .pipe(catchError(this.errorMgmt));
+    return this.http.put(API_URL, data, { headers: this.headers });
   }
 
   // Delete signalement
-  DeleteSignalement(id): Observable<any> {
+  supprimerSignalement(id): Observable<any> {
     var API_URL = `${this.endpoint}/delete-signalement/${id}`;
     return this.http.delete(API_URL).pipe(catchError(this.errorMgmt));
   }

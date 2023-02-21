@@ -8,10 +8,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     <div mat-dialog-content>{{ data }}</div>
     <div mat-dialog-actions>
       <button mat-button [mat-dialog-close]="true" (click)="onYesClick()">
-        Yes
+        Oui
       </button>
       <button mat-button [mat-dialog-close]="false" (click)="onNoClick()">
-        No
+        Non
       </button>
     </div>
   `,
@@ -22,12 +22,10 @@ export class ConfirmationDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: string
   ) {}
   onNoClick(): void {
-    console.log('No clicked');
     this.dialogRef.close(false);
   }
 
   onYesClick(): void {
-    console.log('Yes clicked');
     this.dialogRef.close(true);
   }
 }

@@ -4,9 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const createError = require('http-errors');
-const app = express();
-app.use(express.json());
-const signalementRoute = require('./routes/signalement.route');
+
+// Connecting mongoDB
 // Connecting mongoDB
 const uri = process.env.MONGODB_URI;
 
@@ -20,7 +19,7 @@ mongoose
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
     );
 
-    // ajouter les observations s'ils ne sont pas ajoutés
+    // Seed observations
     seedObservations();
   })
   .catch((err) => {
@@ -28,7 +27,9 @@ mongoose
   });
 
 // Set up express js port
+const signalementRoute = require('./routes/signalement.route');
 
+const app = express();
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
