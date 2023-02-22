@@ -15,7 +15,7 @@ Cloner ce dépôt de code en utilisant la commande suivante :
 
 ## Configuration
 
-Accéder au root et installer les dépendances en exécutant la commande suivante :
+Accéder au root du code cloné, et installer les dépendances en exécutant la commande suivante :
 `npm install -g @angular/cli`
 `npm i`
 `ng serve`
@@ -34,9 +34,10 @@ et le site web est déployé sur github pages accessible depuis le [lien](https:
 
 ## Technologies utilisées
 
-Angular
-Angular Material
-Node.js
-Express
-MongoDB
-Heroku
+ - Angular
+ - Angular Material
+ - html/css
+ - Node.js
+ - Express
+ - MongoDB
+ - Heroku
