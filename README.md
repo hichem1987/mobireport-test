@@ -4,8 +4,8 @@ Ce projet a été réalisé dans le cadre d'un test technique pour la société 
 
 ## Prérequis Installé sur le PC
 
-télécharger et installer Node.js (version 12.0 ou supérieure)
-télécharger et installer GIT
+ - télécharger et installer Node.js (version 12.0 ou supérieure)
+ - télécharger et installer GIT
 
 ## Installation
 
@@ -22,10 +22,10 @@ Accéder au root et installer les dépendances en exécutant la commande suivant
 
 ## Fonctionnalités
 
-Créer un signalement en remplissant un formulaire
-Lister les signalements existants
-Modifier un signalement existant
-Supprimer un signalement existant
+ - Créer un signalement en remplissant un formulaire
+ - Lister les signalements existants
+ - Modifier un signalement existant
+ - Supprimer un signalement existant
 
 ## Deployment
 
